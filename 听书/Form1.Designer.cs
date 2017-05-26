@@ -34,7 +34,7 @@
             this.columnHeaderPlayedTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderTotalTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderPercent = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colunmHeaderFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colunmHeaderWaveFormat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.播放ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.从列表中删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -91,7 +91,7 @@
             this.columnHeaderPlayedTime,
             this.columnHeaderTotalTime,
             this.columnHeaderPercent,
-            this.colunmHeaderFilePath});
+            this.colunmHeaderWaveFormat});
             this.listView1.ContextMenuStrip = this.contextMenuStrip1;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
@@ -110,27 +110,30 @@
             // 
             // columnHeaderFileName
             // 
-            this.columnHeaderFileName.Text = "标题";
+            this.columnHeaderFileName.Text = "文件名";
             this.columnHeaderFileName.Width = 180;
             // 
             // columnHeaderPlayedTime
             // 
-            this.columnHeaderPlayedTime.Text = "上次播放到";
-            this.columnHeaderPlayedTime.Width = 100;
+            this.columnHeaderPlayedTime.Text = "播放到";
+            this.columnHeaderPlayedTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeaderPlayedTime.Width = 80;
             // 
             // columnHeaderTotalTime
             // 
             this.columnHeaderTotalTime.Text = "总时长";
-            this.columnHeaderTotalTime.Width = 104;
+            this.columnHeaderTotalTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeaderTotalTime.Width = 80;
             // 
             // columnHeaderPercent
             // 
             this.columnHeaderPercent.Text = "百分比";
+            this.columnHeaderPercent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // colunmHeaderFilePath
+            // colunmHeaderWaveFormat
             // 
-            this.colunmHeaderFilePath.Text = "文件地址";
-            this.colunmHeaderFilePath.Width = 300;
+            this.colunmHeaderWaveFormat.Text = "音频格式";
+            this.colunmHeaderWaveFormat.Width = 300;
             // 
             // contextMenuStrip1
             // 
@@ -148,6 +151,7 @@
             this.播放ToolStripMenuItem.Name = "播放ToolStripMenuItem";
             this.播放ToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
             this.播放ToolStripMenuItem.Text = "播放";
+            this.播放ToolStripMenuItem.Click += new System.EventHandler(this.播放ToolStripMenuItem_Click);
             // 
             // 从列表中删除ToolStripMenuItem
             // 
@@ -417,8 +421,9 @@
             this.ClientSize = new System.Drawing.Size(960, 602);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
-            this.Text = "播放器 v1.0";
+            this.Text = "播放器 Alpha 0.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -449,7 +454,7 @@
         private System.Windows.Forms.ColumnHeader columnHeaderPlayedTime;
         private System.Windows.Forms.ColumnHeader columnHeaderTotalTime;
         private System.Windows.Forms.ColumnHeader columnHeaderPercent;
-        private System.Windows.Forms.ColumnHeader colunmHeaderFilePath;
+        private System.Windows.Forms.ColumnHeader colunmHeaderWaveFormat;
         private System.Windows.Forms.Button buttonPlayPause;
         private System.Windows.Forms.Button buttonLast;
         private System.Windows.Forms.Button buttonNext;
