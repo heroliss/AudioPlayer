@@ -34,7 +34,7 @@
             this.columnHeaderPlayedTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderTotalTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderPercent = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colunmHeaderWaveFormat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colunmHeaderCustomText = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.播放ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.从列表中删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,8 +45,8 @@
             this.列表循环ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.随机播放ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.单曲循环ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.timerTrackBar = new System.Windows.Forms.Timer(this.components);
+            this.trackBar_process = new System.Windows.Forms.TrackBar();
             this.buttonPlayPause = new System.Windows.Forms.Button();
             this.buttonLast = new System.Windows.Forms.Button();
             this.buttonNext = new System.Windows.Forms.Button();
@@ -60,10 +60,13 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.buttonForward = new System.Windows.Forms.Button();
             this.buttonBack = new System.Windows.Forms.Button();
+            this.trackBar_volum = new System.Windows.Forms.TrackBar();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.timerListview = new System.Windows.Forms.Timer(this.components);
+            this.timer_noResponseMonitor = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_process)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -71,6 +74,7 @@
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_volum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -91,7 +95,7 @@
             this.columnHeaderPlayedTime,
             this.columnHeaderTotalTime,
             this.columnHeaderPercent,
-            this.colunmHeaderWaveFormat});
+            this.colunmHeaderCustomText});
             this.listView1.ContextMenuStrip = this.contextMenuStrip1;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
@@ -130,10 +134,10 @@
             this.columnHeaderPercent.Text = "百分比";
             this.columnHeaderPercent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // colunmHeaderWaveFormat
+            // colunmHeaderCustomText
             // 
-            this.colunmHeaderWaveFormat.Text = "音频格式";
-            this.colunmHeaderWaveFormat.Width = 300;
+            this.colunmHeaderCustomText.Text = "自定义信息";
+            this.colunmHeaderCustomText.Width = 300;
             // 
             // contextMenuStrip1
             // 
@@ -183,7 +187,7 @@
             this.无ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.无ToolStripMenuItem.Name = "无ToolStripMenuItem";
             this.无ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
-            this.无ToolStripMenuItem.Tag = "0";
+            this.无ToolStripMenuItem.Tag = "";
             this.无ToolStripMenuItem.Text = "无";
             this.无ToolStripMenuItem.Click += new System.EventHandler(this.切换选中状态并设置循环方式);
             // 
@@ -191,7 +195,7 @@
             // 
             this.顺序ToolStripMenuItem.Name = "顺序ToolStripMenuItem";
             this.顺序ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
-            this.顺序ToolStripMenuItem.Tag = "1";
+            this.顺序ToolStripMenuItem.Tag = "";
             this.顺序ToolStripMenuItem.Text = "列表顺序";
             this.顺序ToolStripMenuItem.Click += new System.EventHandler(this.切换选中状态并设置循环方式);
             // 
@@ -199,7 +203,7 @@
             // 
             this.列表循环ToolStripMenuItem.Name = "列表循环ToolStripMenuItem";
             this.列表循环ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
-            this.列表循环ToolStripMenuItem.Tag = "2";
+            this.列表循环ToolStripMenuItem.Tag = "";
             this.列表循环ToolStripMenuItem.Text = "列表循环";
             this.列表循环ToolStripMenuItem.Click += new System.EventHandler(this.切换选中状态并设置循环方式);
             // 
@@ -207,7 +211,7 @@
             // 
             this.随机播放ToolStripMenuItem.Name = "随机播放ToolStripMenuItem";
             this.随机播放ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
-            this.随机播放ToolStripMenuItem.Tag = "3";
+            this.随机播放ToolStripMenuItem.Tag = "";
             this.随机播放ToolStripMenuItem.Text = "随机播放";
             this.随机播放ToolStripMenuItem.Click += new System.EventHandler(this.切换选中状态并设置循环方式);
             // 
@@ -215,24 +219,25 @@
             // 
             this.单曲循环ToolStripMenuItem.Name = "单曲循环ToolStripMenuItem";
             this.单曲循环ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
-            this.单曲循环ToolStripMenuItem.Tag = "4";
+            this.单曲循环ToolStripMenuItem.Tag = "";
             this.单曲循环ToolStripMenuItem.Text = "单曲循环";
             this.单曲循环ToolStripMenuItem.Click += new System.EventHandler(this.切换选中状态并设置循环方式);
             // 
-            // timer1
+            // timerTrackBar
             // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timerTrackBar.Interval = 200;
+            this.timerTrackBar.Tick += new System.EventHandler(this.timerTrackBar_Tick);
             // 
-            // trackBar1
+            // trackBar_process
             // 
-            this.trackBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trackBar1.Location = new System.Drawing.Point(0, 0);
-            this.trackBar1.Maximum = 1000;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(960, 33);
-            this.trackBar1.TabIndex = 5;
-            this.trackBar1.TickFrequency = 10;
-            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            this.trackBar_process.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trackBar_process.Location = new System.Drawing.Point(0, 0);
+            this.trackBar_process.Maximum = 1000;
+            this.trackBar_process.Name = "trackBar_process";
+            this.trackBar_process.Size = new System.Drawing.Size(960, 33);
+            this.trackBar_process.TabIndex = 5;
+            this.trackBar_process.TickFrequency = 10;
+            this.trackBar_process.Scroll += new System.EventHandler(this.trackBar_process_Scroll);
             // 
             // buttonPlayPause
             // 
@@ -282,12 +287,13 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel5, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel1.Controls.Add(this.trackBar_volum, 2, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(960, 81);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(960, 73);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // tableLayoutPanel2
@@ -306,7 +312,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(394, 75);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(394, 67);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // panel1
@@ -315,7 +321,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(92, 69);
+            this.panel1.Size = new System.Drawing.Size(92, 61);
             this.panel1.TabIndex = 0;
             // 
             // panel2
@@ -324,7 +330,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(101, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(92, 69);
+            this.panel2.Size = new System.Drawing.Size(92, 61);
             this.panel2.TabIndex = 1;
             // 
             // panel3
@@ -333,7 +339,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(199, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(92, 69);
+            this.panel3.Size = new System.Drawing.Size(92, 61);
             this.panel3.TabIndex = 2;
             // 
             // panel4
@@ -342,7 +348,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(297, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(94, 69);
+            this.panel4.Size = new System.Drawing.Size(94, 61);
             this.panel4.TabIndex = 3;
             // 
             // panel5
@@ -351,7 +357,7 @@
             this.panel5.Controls.Add(this.buttonBack);
             this.panel5.Location = new System.Drawing.Point(3, 3);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(191, 75);
+            this.panel5.Size = new System.Drawing.Size(191, 67);
             this.panel5.TabIndex = 1;
             // 
             // buttonForward
@@ -373,6 +379,19 @@
             this.buttonBack.Text = "←";
             this.buttonBack.UseVisualStyleBackColor = true;
             this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
+            // 
+            // trackBar_volum
+            // 
+            this.trackBar_volum.Dock = System.Windows.Forms.DockStyle.Right;
+            this.trackBar_volum.Location = new System.Drawing.Point(901, 3);
+            this.trackBar_volum.Maximum = 100;
+            this.trackBar_volum.Name = "trackBar_volum";
+            this.trackBar_volum.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.trackBar_volum.Size = new System.Drawing.Size(56, 67);
+            this.trackBar_volum.TabIndex = 2;
+            this.trackBar_volum.TickFrequency = 20;
+            this.trackBar_volum.Value = 50;
+            this.trackBar_volum.Scroll += new System.EventHandler(this.trackBar_volum_Scroll);
             // 
             // splitContainer1
             // 
@@ -408,11 +427,21 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.trackBar1);
+            this.splitContainer2.Panel2.Controls.Add(this.trackBar_process);
             this.splitContainer2.Size = new System.Drawing.Size(960, 110);
             this.splitContainer2.SplitterDistance = 73;
             this.splitContainer2.TabIndex = 5;
             this.splitContainer2.TabStop = false;
+            // 
+            // timerListview
+            // 
+            this.timerListview.Interval = 200;
+            this.timerListview.Tick += new System.EventHandler(this.timerListview_Tick);
+            // 
+            // timer_noResponseMonitor
+            // 
+            this.timer_noResponseMonitor.Interval = 1000;
+            this.timer_noResponseMonitor.Tick += new System.EventHandler(this.timer_noResponseMonitor_Tick);
             // 
             // Form1
             // 
@@ -421,18 +450,19 @@
             this.ClientSize = new System.Drawing.Size(960, 602);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
-            this.Text = "播放器 Alpha 0.1";
+            this.Text = "播放器 beta 0.2.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMenuStrip1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_process)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_volum)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -448,13 +478,13 @@
 
         #endregion
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Timer timerTrackBar;
+        private System.Windows.Forms.TrackBar trackBar_process;
         private System.Windows.Forms.ColumnHeader columnHeaderFileName;
         private System.Windows.Forms.ColumnHeader columnHeaderPlayedTime;
         private System.Windows.Forms.ColumnHeader columnHeaderTotalTime;
         private System.Windows.Forms.ColumnHeader columnHeaderPercent;
-        private System.Windows.Forms.ColumnHeader colunmHeaderWaveFormat;
+        private System.Windows.Forms.ColumnHeader colunmHeaderCustomText;
         private System.Windows.Forms.Button buttonPlayPause;
         private System.Windows.Forms.Button buttonLast;
         private System.Windows.Forms.Button buttonNext;
@@ -480,6 +510,9 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button buttonForward;
         private System.Windows.Forms.Button buttonBack;
+        private System.Windows.Forms.Timer timerListview;
+        private System.Windows.Forms.TrackBar trackBar_volum;
+        private System.Windows.Forms.Timer timer_noResponseMonitor;
     }
 }
 

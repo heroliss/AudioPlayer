@@ -9,51 +9,71 @@ using System.Xml.Linq;
 
 namespace AudioPlayer
 {
-    public class XMLManager
+    public class XMLDataManager
     {
-        XDocument xmlDocument;
-        string xmlFileName;
-        XElement root;
-        public List<KeyValuePair<string, long>> timeDataList;
-        public XMLManager(string xmlFileName)
+        public string XmlVersion { get => "AudioPlayerXML_2.0"; }
+
+        private string xmlFileName; //载入和读取用此同一个文件名
+
+        public XMLDataManager(string xmlFileName)
         {
             this.xmlFileName = xmlFileName;
-            timeDataList = new List<KeyValuePair<string, long>>();
-            try
+        }
+
+        public void save(Dictionary<string, string> globalData, List<Dictionary<string, string>> xmlData)
+        {
+            XDocument xmlDoc = new XDocument();
+            XElement root = new XElement(XmlVersion);
+            xmlDoc.Add(root);
+
+            XElement globalElement = new XElement("Global");
+
+            foreach (KeyValuePair<string, string> attribute in globalData)
             {
-                FileStream file = new FileStream(xmlFileName, FileMode.Open);
-                xmlDocument = XDocument.Load(file);
-                root = xmlDocument.Root;
-                if (root.Name != "AudioPlayer1.0")
-                {
-                    throw new XmlException();
-                }
-                foreach (XElement item in root.Elements("File"))
-                {
-                    timeDataList.Add(new KeyValuePair<string, long>(
-                        item.Attribute("FullFileName").Value, long.Parse(item.Value)));
-                }
-                file.Close();
+                globalElement.Add(new XAttribute(attribute.Key, attribute.Value));
             }
-            catch { }
+            root.Add(globalElement);
 
-            xmlDocument = new XDocument();
-            root = new XElement("AudioPlayer1.0");
-            xmlDocument.Add(root);//创建一个根节点
+            foreach (Dictionary<string, string> item in xmlData)
+            {
+                XElement xmlItem = new XElement("Item");
+                foreach (KeyValuePair<string, string> oneData in item)
+                {
+                    xmlItem.Add(new XAttribute(oneData.Key, oneData.Value));
+                }
+                root.Add(xmlItem);
+            }
+            xmlDoc.Save(xmlFileName);
         }
 
-        public void addItem(string fullFileName,long position)
+        public void loadData(out Dictionary<string, string> globalData, out List<Dictionary<string, string>> itemsData)
         {
-            root.Add(new XElement("File"
-                ,new XAttribute("FullFileName",fullFileName)
-                ,new XText(position.ToString())
-                ));
-        }
+            globalData = new Dictionary<string, string>();
+            itemsData = new List<Dictionary<string, string>>();
+            using (FileStream file = new FileStream(xmlFileName, FileMode.Open))
+            {
+                XDocument xmlDoc = XDocument.Load(file);
+                XElement root = xmlDoc.Root;
+                if (root.Name.LocalName != XmlVersion)
+                {
+                    throw new ApplicationException("XML文件版本不匹配，需要的版本为：" + XmlVersion);
+                }
 
-        public void save()
-        {
-            xmlDocument.Save(xmlFileName);
+                foreach (XAttribute attribute in root.Element("Global").Attributes())
+                {
+                    globalData.Add(attribute.Name.LocalName, attribute.Value);
+                }
+                
+                foreach (XElement ele in root.Elements("Item"))
+                {
+                    Dictionary<string, string> itemData = new Dictionary<string, string>();
+                    foreach (XAttribute attribute in ele.Attributes())
+                    {
+                        itemData.Add(attribute.Name.LocalName, attribute.Value);
+                    }
+                    itemsData.Add(itemData);
+                }
+            }
         }
-
     }
 }
